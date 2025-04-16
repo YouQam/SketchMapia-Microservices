@@ -1,0 +1,38 @@
+<div id="summary_result_div" class="w3-card-4 w3-round" style = "height : 500px ; overflow : auto; visibility: hidden ; position:absolute ; z-index:10000000">
+    <header class="w3-panel w3-round w3-teal" style="position: relative; padding: 0px;margin: 0px">
+        <h6 style="padding-top:5px;margin-left: 3px "><span><b> Result Summary</b></span>
+            <button id="close_bnt" aria-label="Close Account Info Modal Box" style="float: right"
+                    onclick="document.getElementById('summary_result_div').style.display='none'">&times;
+            </button>
+        </h6>
+    </header>
+    <div id = "allresults" style="position:relative" >
+            <div id="summaryResult" style="width: inherit;padding: 5px">
+                 <table id="OrderingofMaps" class="table table-condensed text-center" style="font-size: 12px;font-family: Verdana">
+            <thead>
+                <td>
+                    <div><b>Sketch Maps</b></div>
+                </td>
+                <td>
+                    <div><b>Completeness</b></div>
+                </td>
+                <td>
+                    <div><b>Generalization</b></div>
+                </td>
+                 <td>
+                    <div><b>Qualitative Accuracy </b></div>
+                </td>
+            </thead>
+            <tbody id = "resultRows">
+            </tbody>
+        </table>
+         <div style="padding: 2px;text-align: right">
+
+                <a id="exportAsCSV" type="button" class="btn btn-outline-info btn-file btn-sm" >
+                   Download Results
+                </a>
+            </div>
+    </div>
+   </div>
+</div>
+
