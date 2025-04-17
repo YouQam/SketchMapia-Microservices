@@ -269,21 +269,22 @@ def spatial_transformation(routedata,sketchroutedata):
               Check for a closed loop.
         """
         filtered = [geo for geo in data_ip['features'] if geo['properties']['id'] in curved_ids]
-        filteredGDF = gpd.GeoDataFrame.from_features(filtered, crs='epsg:4326')
-        #print (filteredGDF.geometry)
+        if filtered:
+            filteredGDF = gpd.GeoDataFrame.from_features(filtered, crs='epsg:4326')
+            #print (filteredGDF.geometry)
 
-        # Perform Polygonization
-        polygons = list(polygonize(filteredGDF.geometry))
-        #print ("CHECCCCCKKK", polygons)
+            # Perform Polygonization
+            polygons = list(polygonize(filteredGDF.geometry))
+            #print ("CHECCCCCKKK", polygons)
 
-        # Find Source Line IDs for Each Polygon
-        loop_data = []
-        if polygons:
-            for poly in polygons:
-                contributing_ids = filteredGDF[filteredGDF.geometry.covered_by(poly)]["id"].tolist()
-                loop_data.append(contributing_ids)
+            # Find Source Line IDs for Each Polygon
+            loop_data = []
+            if polygons:
+                for poly in polygons:
+                    contributing_ids = filteredGDF[filteredGDF.geometry.covered_by(poly)]["id"].tolist()
+                    loop_data.append(contributing_ids)
 
-        return loop_data
+            return loop_data
 
 
 
@@ -1284,10 +1285,11 @@ def spatial_transformation(routedata,sketchroutedata):
         otherthanmissing = [geo for geo in data_ip['features'] if
                             geo['properties']['id'] not in m_ids and geo['geometry']['type'] == 'LineString']
         missing = [geo for geo in data_ip['features'] if geo['properties']['id'] in m_ids]
-        otherthanmissingGDF = gpd.GeoDataFrame.from_features(otherthanmissing)
-        missingGDF = gpd.GeoDataFrame.from_features(missing)
-        result = gpd.overlay(otherthanmissingGDF, missingGDF, how='intersection', keep_geom_type=False)
-        return result.iloc[:, 0]
+        if missing:
+            otherthanmissingGDF = gpd.GeoDataFrame.from_features(otherthanmissing)
+            missingGDF = gpd.GeoDataFrame.from_features(missing)
+            result = gpd.overlay(otherthanmissingGDF, missingGDF, how='intersection', keep_geom_type=False)
+            return result.iloc[:, 0]
 
     def get_corresponding_sketch_ids(connectedsegments):
         for k in data:
@@ -1387,26 +1389,27 @@ def spatial_transformation(routedata,sketchroutedata):
 
     junctionmergeCount = 0
     connectedsegments = get_connected_segments(m_ids)
-    correspondingsketchsegments = get_corresponding_sketch_ids(connectedsegments)
-    junctionmerge_sketch_ids = detectJunctionMerge(correspondingsketchsegments)
-    if not (junctionmerge_sketch_ids.empty):
-        for i in junctionmerge_sketch_ids:
-            joinedJunctionSegments = joinSegmentsJunctionMerge(i)
-            if joinedJunctionSegments is not None:
-                junctionmergeCount = junctionmergeCount + 1
-                for feature in feature_collection["features"]:
-                    if feature["properties"]["id"] in joinedJunctionSegments["id"].to_numpy():
-                        id = feature["properties"]["id"]
-                        coordinates = joinedJunctionSegments.loc[joinedJunctionSegments["id"] == id]
-                        # Convert the simplified buffered polygon to GeoJSON format
-                        coordinates_json = coordinates.to_json()
+    if not connectedsegments.empty:
+        correspondingsketchsegments = get_corresponding_sketch_ids(connectedsegments)
+        junctionmerge_sketch_ids = detectJunctionMerge(correspondingsketchsegments)
+        if not (junctionmerge_sketch_ids.empty):
+            for i in junctionmerge_sketch_ids:
+                joinedJunctionSegments = joinSegmentsJunctionMerge(i)
+                if joinedJunctionSegments is not None:
+                    junctionmergeCount = junctionmergeCount + 1
+                    for feature in feature_collection["features"]:
+                        if feature["properties"]["id"] in joinedJunctionSegments["id"].to_numpy():
+                            id = feature["properties"]["id"]
+                            coordinates = joinedJunctionSegments.loc[joinedJunctionSegments["id"] == id]
+                            # Convert the simplified buffered polygon to GeoJSON format
+                            coordinates_json = coordinates.to_json()
 
-                        # Parse the simplified GeoJSON string to a Python dictionary
-                        coordinates_jsondata = json.loads(coordinates_json)
-                        # Update the 'geometry' key in the original feature
-                        feature['geometry'] = coordinates_jsondata['features'][0]['geometry']
-                        feature['properties']['JunctionMergeCount']=junctionmergeCount
-                        feature['properties']['genType2'] = 'JunctionMerge'
+                            # Parse the simplified GeoJSON string to a Python dictionary
+                            coordinates_jsondata = json.loads(coordinates_json)
+                            # Update the 'geometry' key in the original feature
+                            feature['geometry'] = coordinates_jsondata['features'][0]['geometry']
+                            feature['properties']['JunctionMergeCount']=junctionmergeCount
+                            feature['properties']['genType2'] = 'JunctionMerge'
 
 
     for feature in sketchdata['features']:

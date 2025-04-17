@@ -3,7 +3,7 @@ version: '3.2.22'
 services:
   generalizations:
     build: ./generalizations
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver localhost:8001"
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8001"
     ports:
       - "8001:8001"
     volumes:
@@ -12,7 +12,7 @@ services:
 
   completeness:
     build: ./completeness
-    command:  bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver localhost:8002"
+    command:  bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8002"
     ports:
       - "8002:8002"
     volumes:
@@ -21,7 +21,7 @@ services:
 
   qualitativerelations:
     build: ./accuracy
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver localhost:8003" 
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8003" 
     ports:
       - "8003:8003"
     volumes:
@@ -30,7 +30,7 @@ services:
    
   sketchmap_analyser:
     build: ./sketchmap_analyser
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver localhost:8000"
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./sketchmap_analyser:/app
     ports:

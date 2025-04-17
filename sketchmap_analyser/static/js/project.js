@@ -17,6 +17,7 @@ var TemporaryAlignmentArray={};
 var MMGeoJsonDataFiltered = {};
 var SMGeoJsonDataFiltered = {};
 var responseArray = {};
+var qualresponseArray = {};
 var genResultArray = {};
 var orderedGenResult = [];
 var orderedCompResult = [];
@@ -171,10 +172,8 @@ SMGeoJsonData = ProcSketchMap.toGeoJSON();
     // fileName = sketchFileName.split(".");
     // fileName = fName[0];
     StreetGroup = new Set(streetGroupIdÁrray);
-    console.log("STREEEET GROUP", StreetGroup);
     BuildingGroup = new Set(buildingGroupIdArray);
 
-    console.log("streetgroup", StreetGroup);
 
     return {metricdata: MMGeoJsonDataFiltered, sketchdata : SMGeoJsonDataFiltered}
 
@@ -263,18 +262,12 @@ function GenchangestyleOnHover(Array,BooleanGroup,GenBaseMap){
 
 
 async function analyseMultiMap (comp,acc) {
+saveSketchMap();
     responseArray = {};
     genResultArray = {};
+    qualresponseArray = {};
 
-    // To clear the existing Files in QualitativeRelationsOutput
-    await $.ajax({
-        headers: { "X-CSRFToken": $.cookie("csrftoken") },
-        url: 'http://localhost:8003/accuracy/clearFiles/',
-        type: 'POST',
-        success: function (resp) {
-            console.log("error");
-        }
-    });
+
 
     //Clear the Result table and add number of rows and columns in the table as per the number of uploaded sketch maps
     $("#OrderingofMaps tbody tr").remove();
@@ -424,9 +417,7 @@ await $.ajax({
                 //contentType: 'text/plain',
                 success: async function (resp) {
                 const fixedIndex = index;
-                            console.log("WHAT IS INDEX", fixedIndex);
                     $('#summary_result_div').prop("style", " height:500px; overflow: auto;  visibility: visible; position:absolute ; z-index:10000000; background-color: white");
-                    console.log("finish writing input",currentsketchMap);
                     const GenBasemapjson = await generalizedMapExtract(fixedIndex,currentsketchMap,{currentsketchMap:AlignmentArray[currentsketchMap]},routeIDArray,sketchIDArray,lastSketchStreet,lastBaseStreet,resp);
                     const processeddata = await prepareDataForQualifier(fixedIndex,GenBasemapjson.generalizedbasemap);
                     // If completeness is required, wait for the response
@@ -438,8 +429,6 @@ await $.ajax({
     // Wait for both promises to resolve
     Promise.all([completenessPromise, qualitativePromise])
         .then(([completenessResponse, qualitativeResponse]) => {
-            console.log("Completeness Response:", completenessResponse);
-            console.log("Qualitative Response:", qualitativeResponse);
 
             // Merge responses
             Object.assign(responseData, completenessResponse, qualitativeResponse);
@@ -499,7 +488,6 @@ function generalizedMapExtract(index,currentsketchMap,alignmentArraySingleMap,ro
 
                    if(item.properties.Missingmultibuilding != null ) {
                     multibuildingscountMissing = item.properties.Missingmultibuilding;
-                    console.log(multibuildingscountMissing);
                  }
 
 
@@ -509,7 +497,6 @@ function generalizedMapExtract(index,currentsketchMap,alignmentArraySingleMap,ro
 
                  if(item.properties.JunctionMergeCount != null ) {
                     junctionmergecount = item.properties.JunctionMergeCount;
-                    console.log("CHECKKKKKKKKK HERE", junctionmergecount)
                  }
 
                  if(item.properties.genType2 != null && item.properties.genType2.includes("JunctionMerge")){
@@ -520,7 +507,6 @@ function generalizedMapExtract(index,currentsketchMap,alignmentArraySingleMap,ro
                  if (item.properties.genType3 != null && item.properties.genType3.includes("Multi-MultiOmissionMerge")){
                     multiOmiMergeCount = multiOmiMergeCount + 1 ;
                     multiOmiMergeids[currentsketchMap].push(item.properties.id)
-                    console.log(multiOmiMergeCount,"check check check check",item)
                  }
                  if(item.properties.genType1 != null && item.properties.genType1.includes("RoundAbout")){
                     roundaboutids[currentsketchMap].push(item.properties.id);
@@ -528,12 +514,10 @@ function generalizedMapExtract(index,currentsketchMap,alignmentArraySingleMap,ro
 
                   if (item.properties.genType != null && item.properties.genType.includes("Abstraction to show existence streets")){
                     abstExiStreetscount = abstExiStreetscount + 1 ;
-                    console.log(abstExiStreetscount,"EXIS  check check check check",item)
                  }
 
                  if (item.properties.genType != null && item.properties.genType.includes("Abstraction to show existence buildings")){
                     abstExiBuildingsscount = abstExiBuildingsscount + 1 ;
-                    console.log(abstExiBuildingsscount,"EXIS  check check check check",item)
                  }
 
                  if(item.properties.mapType == "Sketch"){
@@ -555,7 +539,7 @@ function generalizedMapExtract(index,currentsketchMap,alignmentArraySingleMap,ro
                   }
                    if (item.properties.SketchAlign){
                     const sketchAlignValue = Object.values(item.properties.SketchAlign);
-                    
+
                     // Check for 'groupid' property first
                     if (item.properties.groupID) {
                         const groupidNumeric = String(item.properties.groupID).replace(/\D/g, ''); // Extract numeric part
@@ -584,7 +568,6 @@ function generalizedMapExtract(index,currentsketchMap,alignmentArraySingleMap,ro
 
                 GenBaseMap = L.geoJSON(baseMapProc);
                 allGenBaseMap[currentsketchMap] = GenBaseMap;
-                console.log(allGenBaseMap,"GenBaseMap");
                 GenStyleLayers(GenBaseMap);
                 Genhoverfunction(GenBaseMap);
                 if (currentsketchMap == sketchMaptitle){
@@ -611,7 +594,6 @@ function generalizedMapExtract(index,currentsketchMap,alignmentArraySingleMap,ro
 
 
 async function analyzeCompleteness(index, currentsketchMap, processedSketch, processedMetric) {
-    console.log("YES OR NOOOOO");
 
     return new Promise((resolve, reject) => {
         $.ajax({
@@ -625,7 +607,6 @@ async function analyzeCompleteness(index, currentsketchMap, processedSketch, pro
                 metricdata: JSON.stringify(processedMetric)
             },
             success: function(response) {
-                console.log("completeness", response);
                 responseArray[currentsketchMap] = response;
                 resolve(response); // ✅ Resolving the response
             },
@@ -638,7 +619,6 @@ async function analyzeCompleteness(index, currentsketchMap, processedSketch, pro
 }
 
 async function analyzeQualitative(index, currentsketchMap, processedSketch, processedMetric) {
-    console.log("YESS OR NOOOOOOOO QA");
 
     return new Promise((resolve, reject) => {
         $.ajax({
@@ -653,6 +633,7 @@ async function analyzeQualitative(index, currentsketchMap, processedSketch, proc
             },
             success: function(response) {
                 console.log('Qualitative analysis result:', response);
+                qualresponseArray[currentsketchMap] = response.qualitative_results;
                 qualRelationsBaseMap[index] = response.mmqcn;
                 qualRelationsSketchMap[index] = response.smqcn;
                 resolve(response.qualitative_results);  // ✅ Resolving the Promise with response
@@ -738,28 +719,10 @@ var QASummaryCSV = [];
 var OverallSummaryCsv = [];
 
 
-
-     if ($("#qa").is(':checked')){
-     for (var i = 0;i<numbOfSM-3;i++){
-         QualRelationsBaseMapCSV[i] = ["Object 1 , Object 2, Relations"];
-         QualRelationsSketchMapCSV[i] = ["Object 1, Object 2, Relations"];
-        for (var x in qualRelationsBaseMap[i].constraint_collection){
-            QualRelationsBaseMapCSV[i].push(" " + ',' +  qualRelationsBaseMap[i].constraint_collection[x].relation_set + ',' + " ");
-            for (var y in  qualRelationsBaseMap[i].constraint_collection[x].constraints){
-            QualRelationsBaseMapCSV[i].push(qualRelationsBaseMap[i].constraint_collection[x].constraints[y]["obj 1"] + ',' + qualRelationsBaseMap[i].constraint_collection[x].constraints[y]["obj 2"] + ',' + qualRelationsBaseMap[i].constraint_collection[x].constraints[y]["relation"])
-            }
-        }
-
-        for (var x in qualRelationsSketchMap[i].constraint_collection){
-            QualRelationsSketchMapCSV[i].push(" " + ',' +  qualRelationsSketchMap[i].constraint_collection[x].relation_set + ',' + " ");
-            for (var y in  qualRelationsSketchMap[i].constraint_collection[x].constraints){
-            QualRelationsSketchMapCSV[i].push(qualRelationsSketchMap[i].constraint_collection[x].constraints[y]["obj 1"] + ',' + qualRelationsSketchMap[i].constraint_collection[x].constraints[y]["obj 2"] + ',' + qualRelationsSketchMap[i].constraint_collection[x].constraints[y]["relation"])
-            }
-        }
-    }
- }
+//COMPLETENESS
 
 
+if (Object.keys(responseArray)!=0){
 for (var i in Object.keys(responseArray)){
         var sketchmap = Object.keys(responseArray)[i];
         CompletenessSummaryCSV.push(sketchmap);
@@ -774,8 +737,9 @@ for (var i in Object.keys(responseArray)){
         CompletenessSummaryCSV.push("OverallCompleteness" + "," + responseArray[sketchmap].overAllCompleteness )
         CompletenessSummaryCSV.push("   ");
 }
+}
 
-
+//GENERALIZATION
 for (var i in Object.keys(genResultArray)){
         var sketchmap = Object.keys(genResultArray)[i];
         GeneralizationSummaryCSV.push(sketchmap);
@@ -800,20 +764,48 @@ for (var i in Object.keys(genResultArray)){
 }
 
 
-for (var i in Object.keys(responseArray)){
-        var sketchmap = Object.keys(responseArray)[i];
+//QUALITATIVE ACCURACY
+
+if (Object.keys(qualresponseArray)!=0){
+     for (var i = 0;i<numbOfSM-3;i++){
+         QualRelationsBaseMapCSV[i] = ["Object 1 , Object 2, Relations"];
+         QualRelationsSketchMapCSV[i] = ["Object 1, Object 2, Relations"];
+         console.log("checckk", i, qualRelationsBaseMap[i]);
+         if (qualRelationsBaseMap[i]){
+        for (var x in qualRelationsBaseMap[i].constraint_collection){
+            QualRelationsBaseMapCSV[i].push(" " + ',' +  qualRelationsBaseMap[i].constraint_collection[x].relation_set + ',' + " ");
+            for (var y in  qualRelationsBaseMap[i].constraint_collection[x].constraints){
+            QualRelationsBaseMapCSV[i].push(qualRelationsBaseMap[i].constraint_collection[x].constraints[y]["obj 1"] + ',' + qualRelationsBaseMap[i].constraint_collection[x].constraints[y]["obj 2"] + ',' + qualRelationsBaseMap[i].constraint_collection[x].constraints[y]["relation"])
+            }
+        }
+
+        for (var x in qualRelationsSketchMap[i].constraint_collection){
+            QualRelationsSketchMapCSV[i].push(" " + ',' +  qualRelationsSketchMap[i].constraint_collection[x].relation_set + ',' + " ");
+            for (var y in  qualRelationsSketchMap[i].constraint_collection[x].constraints){
+            QualRelationsSketchMapCSV[i].push(qualRelationsSketchMap[i].constraint_collection[x].constraints[y]["obj 1"] + ',' + qualRelationsSketchMap[i].constraint_collection[x].constraints[y]["obj 2"] + ',' + qualRelationsSketchMap[i].constraint_collection[x].constraints[y]["relation"])
+            }
+        }
+        }
+    }
+
+
+for (var i in Object.keys(qualresponseArray)){
+console.log(i, Object.keys(qualresponseArray)[i]);
+        var sketchmap = Object.keys(qualresponseArray)[i];
+        console.log(sketchmap);
         QASummaryCSV.push(sketchmap);
         QASummaryCSV.push("Correctness");
         QASummaryCSV.push("Qualitative Spatial Aspects , Relations in Base map , Relations in Sketch Map , Correct Relations, Wrong Relations, Missing Relations, Accuracy Rate (%)");
-        QASummaryCSV.push("Topological Relations between Landmarks and Regions" + "," + responseArray[sketchmap].totalRCC11Relations_mm + "," + responseArray[sketchmap].totalRCC11Relations + ',' + responseArray[sketchmap].correctRCC11Relations + ',' + responseArray[sketchmap].wrongMatchedRCC11rels + ',' + responseArray[sketchmap].missingRCC11rels + ',' + responseArray[sketchmap].correctnessAccuracy_rcc11 );
-        QASummaryCSV.push("Linear Ordering of Landmarks along Street Segments" + "," + responseArray[sketchmap].total_lO_rels_mm + "," + responseArray[sketchmap].total_LO_rels_sm + ',' + responseArray[sketchmap].matched_LO_rels + ',' + responseArray[sketchmap].wrong_matched_LO_rels + ',' + responseArray[sketchmap].missing_LO_rels + ',' + responseArray[sketchmap].correctnessAccuracy_LO);
-        QASummaryCSV.push("Left-Right Relations of Landmarks wrt. Street-segments" + "," + responseArray[sketchmap].total_LR_rels_mm + "," + responseArray[sketchmap].total_LR_rels_sm + ',' + responseArray[sketchmap].matched_LR_rels + ',' + responseArray[sketchmap].wrong_matched_LR_rels + ',' + responseArray[sketchmap].missing_LR_rels + ',' + responseArray[sketchmap].correctnessAccuracy_LR);
-        QASummaryCSV.push("Topological Relations between street-segments and regions/landmarks" + "," + responseArray[sketchmap].total_DE9IM_rels_mm + ',' + responseArray[sketchmap].total_DE9IM_rels_sm + ',' + responseArray[sketchmap].matched_DE9IM_rels + ',' + responseArray[sketchmap].wrong_matched_DE9IM_rels + ',' + responseArray[sketchmap].missing_DE9IM_rels + ',' + responseArray[sketchmap].correctnessAccuracy_DE9IM );
-        QASummaryCSV.push("Connectivity of street segments" + "," + responseArray[sketchmap].total_streetTop_rels_mm + "," + responseArray[sketchmap].total_streetTop_rels_sm + "," + responseArray[sketchmap].matched_streetTop_rels + "," + responseArray[sketchmap].wrong_matched_streetTop_rels + "," +responseArray[sketchmap].missing_streetTop_rels + "," +responseArray[sketchmap].correctnessAccuracy_streetTop);
-        QASummaryCSV.push("Relative Orientation of Connected Street-segments" + "," + responseArray[sketchmap].total_opra_rels_mm + "," + responseArray[sketchmap].total_opra_rels_sm+ "," + responseArray[sketchmap].matched_opra_rels + "," + responseArray[sketchmap].wrong_matched_opra_rels + "," + responseArray[sketchmap].missing_opra_rels + "," + responseArray[sketchmap].correctnessAccuracy_opra);
+        QASummaryCSV.push("Topological Relations between Landmarks and Regions" + "," + qualresponseArray[sketchmap].totalRCC11Relations_mm + "," + qualresponseArray[sketchmap].totalRCC11Relations + ',' + qualresponseArray[sketchmap].correctRCC11Relations + ',' + qualresponseArray[sketchmap].wrongMatchedRCC11rels + ',' + qualresponseArray[sketchmap].missingRCC11rels + ',' + qualresponseArray[sketchmap].correctnessAccuracy_rcc11 );
+        QASummaryCSV.push("Linear Ordering of Landmarks along Street Segments" + "," + qualresponseArray[sketchmap].total_lO_rels_mm + "," + qualresponseArray[sketchmap].total_LO_rels_sm + ',' + qualresponseArray[sketchmap].matched_LO_rels + ',' + qualresponseArray[sketchmap].wrong_matched_LO_rels + ',' + qualresponseArray[sketchmap].missing_LO_rels + ',' + qualresponseArray[sketchmap].correctnessAccuracy_LO);
+        QASummaryCSV.push("Left-Right Relations of Landmarks wrt. Street-segments" + "," + qualresponseArray[sketchmap].total_LR_rels_mm + "," + qualresponseArray[sketchmap].total_LR_rels_sm + ',' + qualresponseArray[sketchmap].matched_LR_rels + ',' + qualresponseArray[sketchmap].wrong_matched_LR_rels + ',' + qualresponseArray[sketchmap].missing_LR_rels + ',' + qualresponseArray[sketchmap].correctnessAccuracy_LR);
+        QASummaryCSV.push("Topological Relations between street-segments and regions/landmarks" + "," + qualresponseArray[sketchmap].total_DE9IM_rels_mm + ',' + qualresponseArray[sketchmap].total_DE9IM_rels_sm + ',' + qualresponseArray[sketchmap].matched_DE9IM_rels + ',' + qualresponseArray[sketchmap].wrong_matched_DE9IM_rels + ',' + qualresponseArray[sketchmap].missing_DE9IM_rels + ',' + qualresponseArray[sketchmap].correctnessAccuracy_DE9IM );
+        QASummaryCSV.push("Connectivity of street segments" + "," + qualresponseArray[sketchmap].total_streetTop_rels_mm + "," + qualresponseArray[sketchmap].total_streetTop_rels_sm + "," + qualresponseArray[sketchmap].matched_streetTop_rels + "," + qualresponseArray[sketchmap].wrong_matched_streetTop_rels + "," + qualresponseArray[sketchmap].missing_streetTop_rels + "," + qualresponseArray[sketchmap].correctnessAccuracy_streetTop);
+        QASummaryCSV.push("Relative Orientation of Connected Street-segments" + "," + qualresponseArray[sketchmap].total_opra_rels_mm + "," + qualresponseArray[sketchmap].total_opra_rels_sm+ "," + qualresponseArray[sketchmap].matched_opra_rels + "," + qualresponseArray[sketchmap].wrong_matched_opra_rels + "," + qualresponseArray[sketchmap].missing_opra_rels + "," + qualresponseArray[sketchmap].correctnessAccuracy_opra);
         QASummaryCSV.push("    ");
 }
 
+}
 
 GeneralizationCSV.push("Sketch Map , BaseId , SketchId , Generalization Type");
 
@@ -851,7 +843,7 @@ GeneralizationCSV.push("Sketch Map , BaseId , SketchId , Generalization Type");
                 }
           }
           if (typeof TemporaryAlignmentArray[sketchmap][key].genType == 'undefined'){
-                console.log("true");
+
                 TemporaryAlignmentArray[sketchmap][key].genType = "NOT DEFINED";
           }
         GeneralizationCSV.push(sketchmap + ',' + ((TemporaryAlignmentArray[sketchmap][key].BaseAlign[0]).toString()).replaceAll(",", " ") + ',' + ((TemporaryAlignmentArray[sketchmap][key].SketchAlign[0]).toString()).replaceAll(",", " ") + ',' + ((TemporaryAlignmentArray[sketchmap][key].genType).toString()) ) ;
@@ -886,14 +878,14 @@ GeneralizationCSV.push("Sketch Map , BaseId , SketchId , Generalization Type");
         zip.file("ResultSummary.csv", OverallSummaryCsv.join("\n"));
         zip.file("GenDetailedOutput.csv",GeneralizationCSV.join("\n"));
 
-        if ($("#qa").is(':checked')){
+if (Object.keys(qualresponseArray)!=0){
         for (var i = 0;i<numbOfSM-3;i++){
-                zip.folder("QualitativeRelations").file(qualRelationsBaseMap[i].basemap + ".csv",QualRelationsBaseMapCSV[i].join("\n"));
-                zip.folder("QualitativeRelations").file(qualRelationsSketchMap[i].sketchmap + ".csv",QualRelationsSketchMapCSV[i].join("\n"));
+                zip.folder("QualitativeRelations").file("BaseMapFor" + Object.keys(qualresponseArray)[i] + ".csv",QualRelationsBaseMapCSV[i].join("\n"));
+                zip.folder("QualitativeRelations").file(Object.keys(qualresponseArray)[i] + ".csv",QualRelationsSketchMapCSV[i].join("\n"));
         }
 
                 zip.file("QASummary.csv", QASummaryCSV.join("\n"));
-        }
+}
         for (var i in Object.keys(allGenBaseMap)){
         zip.folder("GeneralizedBaseMap").file(Object.keys(allGenBaseMap)[i]+".geojson", JSON.stringify(allGenBaseMap[Object.keys(allGenBaseMap)[i]].toGeoJSON()));
         }

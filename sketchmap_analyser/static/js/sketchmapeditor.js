@@ -1151,3 +1151,13 @@ if (commonPair) {
         }
     });
 
+
+document.querySelectorAll('.menu-options li').forEach(item => {
+    item.addEventListener('click', () => {
+        document.querySelectorAll('.menu-options').forEach(menu => {
+            menu.style.opacity = "0";
+            menu.style.transform = "translateY(-10px)";
+            setTimeout(() => menu.style.display = "none", 300);
+        });
+    });
+});
