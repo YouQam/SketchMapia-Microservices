@@ -598,7 +598,7 @@ async function analyzeCompleteness(index, currentsketchMap, processedSketch, pro
     return new Promise((resolve, reject) => {
         $.ajax({
             headers: { "X-CSRFToken": $.cookie("csrftoken") },
-            url: 'http://127.0.0.1:8002/completeness/analyzeCompleteness/',
+            url: 'http://localhost:8002/completeness/analyzeCompleteness/',
             type: 'POST',
             data: {
                 sketchFileName: currentsketchMap,
@@ -623,7 +623,7 @@ async function analyzeQualitative(index, currentsketchMap, processedSketch, proc
     return new Promise((resolve, reject) => {
         $.ajax({
             headers: { "X-CSRFToken": $.cookie("csrftoken") },
-            url: 'http://127.0.0.1:8003/accuracy/analyzeQualitative/',
+            url: 'http://localhost:8003/accuracy/analyzeQualitative/',
             type: 'POST',
             data: {
                 sketchFileName: currentsketchMap,

@@ -4,179 +4,52 @@
         {
             "type": "Feature",
             "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [
-                        252.0,
-                        322.37066
-                    ],
-                    [
-                        430.09908946507534,
-                        325.3583956016822
-                    ],
-                    [
-                        455.0,
-                        327.375408
-                    ]
-                ]
-            },
-            "properties": {
-                "genType": "No generalization",
-                "BaseAlign": 0,
-                "SketchAlign": [
-                    "S0"
-                ],
-                "id": 0,
-                "isRoute": null,
-                "feat_type": null,
-                "selected": false,
-                "aligned": true,
-                "otype": "Line",
-                "JunctionMergeCount": 1,
-                "genType2": "JunctionMerge"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [
-                        455.0,
-                        327.375408
-                    ],
-                    [
-                        478.8608960048226,
-                        334.8075148344089
-                    ],
-                    [
-                        474.0,
-                        524.562493
-                    ]
-                ]
-            },
-            "properties": {
-                "genType": "No generalization",
-                "BaseAlign": 3,
-                "SketchAlign": [
-                    "S2"
-                ],
-                "id": 3,
-                "isRoute": null,
-                "feat_type": null,
-                "selected": false,
-                "aligned": true,
-                "otype": "Line",
-                "JunctionMergeCount": 1,
-                "genType2": "JunctionMerge"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [
-                        455.0,
-                        327.375408
-                    ],
-                    [
-                        479.89939942260145,
-                        329.4231797962906
-                    ],
-                    [
-                        636.0,
-                        337.384905
-                    ]
-                ]
-            },
-            "properties": {
-                "genType": "No generalization",
-                "BaseAlign": 4,
-                "SketchAlign": [
-                    "S3"
-                ],
-                "id": 4,
-                "isRoute": null,
-                "feat_type": null,
-                "selected": false,
-                "aligned": true,
-                "otype": "Line",
-                "JunctionMergeCount": 1,
-                "genType2": "JunctionMerge"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [
-                        455.0,
-                        327.375408
-                    ],
-                    [
-                        430.9777233888948,
-                        320.51259589682013
-                    ],
-                    [
-                        430.0,
-                        107.166481
-                    ]
-                ]
-            },
-            "properties": {
-                "genType": "No generalization",
-                "BaseAlign": 1,
-                "SketchAlign": [
-                    "S1"
-                ],
-                "id": 1,
-                "isRoute": null,
-                "feat_type": null,
-                "selected": false,
-                "aligned": true,
-                "otype": "Line",
-                "JunctionMergeCount": 1,
-                "genType2": "JunctionMerge"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
                 "type": "Polygon",
                 "coordinates": [
                     [
                         [
-                            373.0,
-                            459.500764
+                            368.0,
+                            321.36971
                         ],
                         [
-                            359.0,
-                            372.418143
+                            376.0,
+                            399.443784
                         ],
                         [
-                            418.0,
-                            372.418143
+                            469.0,
+                            388.433338
                         ],
                         [
-                            429.0,
-                            468.509311
+                            463.0,
+                            320.36876
                         ],
                         [
-                            373.0,
-                            459.500764
+                            460.0,
+                            271.322227
+                        ],
+                        [
+                            456.0,
+                            220.273794
+                        ],
+                        [
+                            369.0,
+                            238.290888
+                        ],
+                        [
+                            368.0,
+                            321.36971
                         ]
                     ]
                 ]
             },
             "properties": {
-                "genType": "No generalization",
-                "BaseAlign": 6,
-                "SketchAlign": [
-                    "S4"
+                "genType": "Amalgamation",
+                "BaseAlign": [
+                    3,
+                    4
                 ],
-                "id": 6,
+                "SketchAlign": "S3",
+                "id": 4,
                 "isRoute": null,
                 "feat_type": "Landmark",
                 "selected": false,
@@ -190,62 +63,88 @@
                 "type": "LineString",
                 "coordinates": [
                     [
-                        431.0,
-                        325.373509
+                        319.0,
+                        443.48557
                     ],
                     [
-                        479.0,
-                        329.377307
+                        298.0,
+                        174.230109
                     ]
                 ]
             },
             "properties": {
-                "id": 2,
-                "isRoute": null,
+                "genType": "No generalization",
+                "BaseAlign": 0,
+                "SketchAlign": [
+                    "S0"
+                ],
+                "id": 0,
+                "isRoute": "Yes",
                 "feat_type": null,
                 "selected": false,
-                "aligned": false,
+                "aligned": true,
                 "otype": "Line",
-                "missing": true
+                "RouteSeqOrder": 1
             }
         },
         {
             "type": "Feature",
             "geometry": {
-                "type": "Polygon",
+                "type": "LineString",
                 "coordinates": [
                     [
-                        [
-                            254.0,
-                            438.480821
-                        ],
-                        [
-                            254.0,
-                            367.413395
-                        ],
-                        [
-                            331.0,
-                            372.418143
-                        ],
-                        [
-                            337.0,
-                            459.500764
-                        ],
-                        [
-                            254.0,
-                            438.480821
-                        ]
+                        298.0,
+                        174.230109
+                    ],
+                    [
+                        539.0,
+                        168.224411
                     ]
                 ]
             },
             "properties": {
-                "id": 5,
-                "isRoute": null,
-                "feat_type": "Landmark",
+                "genType": "No generalization",
+                "BaseAlign": 1,
+                "SketchAlign": [
+                    "S1"
+                ],
+                "id": 1,
+                "isRoute": "Yes",
+                "feat_type": null,
                 "selected": false,
-                "aligned": false,
-                "otype": "Polygon",
-                "missing": true
+                "aligned": true,
+                "otype": "Line",
+                "RouteSeqOrder": 2
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        539.0,
+                        168.224411
+                    ],
+                    [
+                        549.0,
+                        439.481771
+                    ]
+                ]
+            },
+            "properties": {
+                "genType": "No generalization",
+                "BaseAlign": 2,
+                "SketchAlign": [
+                    "S2"
+                ],
+                "id": 2,
+                "isRoute": "Yes",
+                "feat_type": null,
+                "selected": false,
+                "aligned": true,
+                "otype": "Line",
+                "RouteSeqOrder": 3
             }
         },
         {
@@ -253,23 +152,24 @@
             "properties": {
                 "id": 0,
                 "sid": "S0",
-                "isRoute": null,
+                "isRoute": "Yes",
                 "feat_type": null,
                 "selected": false,
                 "aligned": true,
                 "otype": "Line",
+                "SketchRouteSeqOrder": 1,
                 "mapType": "Sketch"
             },
             "geometry": {
                 "type": "LineString",
                 "coordinates": [
                     [
-                        281,
-                        370.817664
+                        359,
+                        475.917379
                     ],
                     [
-                        413,
-                        372.819563
+                        323,
+                        217.672365
                     ]
                 ]
             }
@@ -279,23 +179,24 @@
             "properties": {
                 "id": 1,
                 "sid": "S1",
-                "isRoute": null,
+                "isRoute": "Yes",
                 "feat_type": null,
                 "selected": false,
                 "aligned": true,
                 "otype": "Line",
+                "SketchRouteSeqOrder": 2,
                 "mapType": "Sketch"
             },
             "geometry": {
                 "type": "LineString",
                 "coordinates": [
                     [
-                        413,
-                        372.819563
+                        323,
+                        217.672365
                     ],
                     [
-                        425,
-                        211.666667
+                        523,
+                        222.677113
                     ]
                 ]
             }
@@ -305,23 +206,24 @@
             "properties": {
                 "id": 2,
                 "sid": "S2",
-                "isRoute": null,
+                "isRoute": "Yes",
                 "feat_type": null,
                 "selected": false,
                 "aligned": true,
                 "otype": "Line",
+                "SketchRouteSeqOrder": 3,
                 "mapType": "Sketch"
             },
             "geometry": {
                 "type": "LineString",
                 "coordinates": [
                     [
-                        413,
-                        372.819563
+                        523,
+                        222.677113
                     ],
                     [
-                        410,
-                        526.965812
+                        563,
+                        477.919278
                     ]
                 ]
             }
@@ -332,32 +234,6 @@
                 "id": 3,
                 "sid": "S3",
                 "isRoute": null,
-                "feat_type": null,
-                "selected": false,
-                "aligned": true,
-                "otype": "Line",
-                "mapType": "Sketch"
-            },
-            "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [
-                        413,
-                        372.819563
-                    ],
-                    [
-                        569,
-                        376.823362
-                    ]
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "id": 4,
-                "sid": "S4",
-                "isRoute": null,
                 "feat_type": "Landmark",
                 "selected": false,
                 "aligned": true,
@@ -369,24 +245,24 @@
                 "coordinates": [
                     [
                         [
-                            372,
-                            465.907882
+                            423,
+                            434.878443
                         ],
                         [
-                            319,
-                            469.911681
+                            376,
+                            275.727445
                         ],
                         [
-                            304,
-                            400.846154
+                            476,
+                            275.727445
                         ],
                         [
-                            373,
-                            403.849003
+                            519,
+                            455.898386
                         ],
                         [
-                            372,
-                            465.907882
+                            423,
+                            434.878443
                         ]
                     ]
                 ]

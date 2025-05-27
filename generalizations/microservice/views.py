@@ -1389,7 +1389,7 @@ def spatial_transformation(routedata,sketchroutedata):
 
     junctionmergeCount = 0
     connectedsegments = get_connected_segments(m_ids)
-    if not connectedsegments.empty:
+    if connectedsegments is not None and not connectedsegments.empty:
         correspondingsketchsegments = get_corresponding_sketch_ids(connectedsegments)
         junctionmerge_sketch_ids = detectJunctionMerge(correspondingsketchsegments)
         if not (junctionmerge_sketch_ids.empty):

@@ -16,34 +16,6 @@
     "2": {
         "BaseAlign": {
             "0": [
-                3
-            ]
-        },
-        "SketchAlign": {
-            "0": [
-                "S2"
-            ]
-        },
-        "genType": "No generalization",
-        "degreeOfGeneralization": 0
-    },
-    "3": {
-        "BaseAlign": {
-            "0": [
-                4
-            ]
-        },
-        "SketchAlign": {
-            "0": [
-                "S3"
-            ]
-        },
-        "genType": "No generalization",
-        "degreeOfGeneralization": 0
-    },
-    "4": {
-        "BaseAlign": {
-            "0": [
                 1
             ]
         },
@@ -55,19 +27,34 @@
         "genType": "No generalization",
         "degreeOfGeneralization": 0
     },
-    "5": {
+    "3": {
         "BaseAlign": {
             "0": [
-                6
+                2
             ]
         },
         "SketchAlign": {
             "0": [
-                "S4"
+                "S2"
             ]
         },
         "genType": "No generalization",
         "degreeOfGeneralization": 0
     },
-    "checkAlignnum": 6
+    "4": {
+        "BaseAlign": {
+            "0": [
+                3,
+                4
+            ]
+        },
+        "SketchAlign": {
+            "0": [
+                "S3"
+            ]
+        },
+        "genType": "Amalgamation",
+        "degreeOfGeneralization": 0.5
+    },
+    "checkAlignnum": 5
 }

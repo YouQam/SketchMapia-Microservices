@@ -6,22 +6,23 @@
             "properties": {
                 "id": 0,
                 "sid": "S0",
-                "isRoute": null,
+                "isRoute": "Yes",
                 "feat_type": null,
                 "selected": false,
                 "aligned": true,
-                "otype": "Line"
+                "otype": "Line",
+                "SketchRouteSeqOrder": 1
             },
             "geometry": {
                 "type": "LineString",
                 "coordinates": [
                     [
-                        281,
-                        370.817664
+                        359,
+                        475.917379
                     ],
                     [
-                        413,
-                        372.819563
+                        323,
+                        217.672365
                     ]
                 ]
             }
@@ -31,22 +32,23 @@
             "properties": {
                 "id": 1,
                 "sid": "S1",
-                "isRoute": null,
+                "isRoute": "Yes",
                 "feat_type": null,
                 "selected": false,
                 "aligned": true,
-                "otype": "Line"
+                "otype": "Line",
+                "SketchRouteSeqOrder": 2
             },
             "geometry": {
                 "type": "LineString",
                 "coordinates": [
                     [
-                        413,
-                        372.819563
+                        323,
+                        217.672365
                     ],
                     [
-                        425,
-                        211.666667
+                        523,
+                        222.677113
                     ]
                 ]
             }
@@ -56,22 +58,23 @@
             "properties": {
                 "id": 2,
                 "sid": "S2",
-                "isRoute": null,
+                "isRoute": "Yes",
                 "feat_type": null,
                 "selected": false,
                 "aligned": true,
-                "otype": "Line"
+                "otype": "Line",
+                "SketchRouteSeqOrder": 3
             },
             "geometry": {
                 "type": "LineString",
                 "coordinates": [
                     [
-                        413,
-                        372.819563
+                        523,
+                        222.677113
                     ],
                     [
-                        410,
-                        526.965812
+                        563,
+                        477.919278
                     ]
                 ]
             }
@@ -81,31 +84,6 @@
             "properties": {
                 "id": 3,
                 "sid": "S3",
-                "isRoute": null,
-                "feat_type": null,
-                "selected": false,
-                "aligned": true,
-                "otype": "Line"
-            },
-            "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [
-                        413,
-                        372.819563
-                    ],
-                    [
-                        569,
-                        376.823362
-                    ]
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "id": 4,
-                "sid": "S4",
                 "isRoute": null,
                 "feat_type": "Landmark",
                 "selected": false,
@@ -117,24 +95,24 @@
                 "coordinates": [
                     [
                         [
-                            372,
-                            465.907882
+                            423,
+                            434.878443
                         ],
                         [
-                            319,
-                            469.911681
+                            376,
+                            275.727445
                         ],
                         [
-                            304,
-                            400.846154
+                            476,
+                            275.727445
                         ],
                         [
-                            373,
-                            403.849003
+                            519,
+                            455.898386
                         ],
                         [
-                            372,
-                            465.907882
+                            423,
+                            434.878443
                         ]
                     ]
                 ]
