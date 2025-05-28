@@ -2,61 +2,188 @@
 {% load static %}
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Give+You+Glory&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;700&display=swap" rel="stylesheet">
+  <title>Sketch Map Analyser</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Mulish' ;
+      background-color: #f4f6f8;
+      color: #333;
+    }
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+     header {
+      background-color: #7AB629; /* green top bar */
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
 
-  <title>SKETCHMAP ANALYSER</title>
+    .header-left img {
+      height: 40px;
+    }
 
-  <!-- Bootstrap core CSS -->
-  <link href="{% static '//vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    .header-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
 
-  <!-- Custom fonts for this template -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Merriweather:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
-  <link href="{% static '//vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    .header-center img {
+      height: 80px;
+    }
+    .main-container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+    }
+    .left-panel, .right-panel {
+      flex: 1;
+      min-width: 300px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .left-panel {
+      border-right: 1px solid #ccc;
+    }
+    #LinktoSoftware {
+      display: inline-block;
+      background-color: #7AB629;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 4px;
+      margin-top: 20px;
+    }
+      #LinktoSoftware:hover {
+      background-color: #256428;
+    }
 
-  <!-- Custom styles for this template -->
-  <link href="{% static '//css/coming-soon.min.css' %}" rel="stylesheet">
-  <link rel = "stylesheet" href="{% static '//css/main.css' %}">
+    #SILlogo{
+      height: 80px;
+      width: auto;
+    }
 
+    h1{
+      color: #7AB629;
+    }
+
+     green-title {
+      display: block;
+    }
+    green-title .title {
+      color: #7AB629;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    green-title .content {
+      color: black;
+      margin-top: 5px;
+    }
+
+  </style>
 </head>
-
 <body>
 
-  <div class="overlay"></div>
-  <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
-    <source src="{% static '//videos/bg.mp4' %}" type="video/mp4">
-  </video>
+  <header>
+       <div class="header-left">
+     <img id = "SILlogo" src="{% static '//img/Logo_SIL_white_en.png' %}" alt="SketchMapia Logo" />
+    </div>
 
-  <div class="masthead">
-    <div class="masthead-bg"></div>
-    <div class="container h-100">
-      <div class="row h-100">
-        <div class="col-12 my-auto">
-          <div class="masthead-content text-white py-5 py-md-0">
-            <h1 class="mb-3">A tool to resolve the generalization in sketch maps</h1>
-            <div class="input-group input-group-newsletter">
-             {% block content %}
-             {% endblock %}
-            </div>
-          </div>
+    <div class="header-center">
+       <img id = "Sketchmapialogo" src="{% static '//img/SKETCHMAPIA.png' %}" alt="SketchMapia Logo" />
+    </div>
+
+
+  </header>
+
+  <div class="main-container">
+    <div class="left-panel">
+      <h1>Sketch Map Analyser</h1>
+      <h2>About</h2>
+      <p>
+       Researchers have long sought to systematically study how people perceive and understand space. Sketch maps can be considered as externalization of cognitive mental maps. However, the analysis of sketch maps is still a complicated, manual process. SketchMapia is a comprehensive method to analyse sketch maps. The analysis of sketch maps is utterly complex. SketchMapia assists people to systematically analyse sketch maps in social and natural sciences.
+      </p>
+      <p>
+      <ol type="I">
+        <li>which features the participant remember, </li>
+        <li>at which level of generalisation (abstraction) did the participant recall objects, and </li>
+        <li>was the participant able to recall them in the correct spatial configuration. </li>
+      </ol>
+      </p>
+      <h2>References</h2>
+       <green-title>
+    <a href="https://doi.org/10.1371/journal.pone.0304696" target="_blank" rel="noopener noreferrer" class="title">
+      An algorithmic approach to detect generalization in sketch maps from sketch map alignment
+    </a>
+    <div class="content">
+     Manivannan C.; Krukar J.; Schwering A.
+Public Library of Science
+PloS one
+2024
+
+    </div>
+  </green-title>
+       <green-title>
+    <a href="https://doi.org/10.1016/j.jenvp.2022.101851" target="_blank" rel="noopener noreferrer" class="title">
+    Spatial generalization in sketch maps: A systematic classification
+    </a>
+    <div class="content">
+      Manivannan C.; Krukar J.; Schwering A.
+Academic Press
+Journal of Environmental Psychology
+2022
+
+    </div>
+  </green-title>
+       <green-title>
+    <a href="https://doi.org/10.1007/978-3-319-96385-3_19" target="_blank" rel="noopener noreferrer" class="title">
+    Distinguishing Sketch Map Types: A Flexible Feature-Based Classification
+    </a>
+    <div class="content">
+      Krukar J, Münzer S, Lörch L, Anacta VJ, Fuest S, Schwering A
+Springer International Publishing
+2018
+
+    </div>
+  </green-title>
+       <green-title>
+    <a href="https://www.tandfonline.com/doi/full/10.1080/13875868.2014.917378" target="_blank" rel="noopener noreferrer" class="title">
+     SketchMapia: Qualitative Representations for the Alignment of Sketch and Metric Maps
+    </a>
+    <div class="content">
+     Schwering, Angela; Wang, Jia; Chipofya, Malumbo; Jan, Sahib; Li, Rui; Broelemann, Klaus
+Spatial Cognition and Computation
+2014
+
+    </div>
+  </green-title>
+
+    </div>
+    <div class="right-panel">
+        <a id = "LinktoSoftware" href="http://localhost:8000/generalizingmaps/" target="_blank"> Start SKETCHMAPIA</a>
+      <h2 >Tutorials</h2>
+      <p>This video gives a short overview of SketchMapia and how to use it.</p>
+      <div style="text-align: center;">
+       <iframe width="420" height="280"
+          src="https://www.youtube.com/embed/7yAf-c5qIrk"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+      </iframe>
         </div>
-      </div>
+        <p>The step-by-step instruction of how to use the software can be found at the associated github repository:  <a style="color:#7AB629" href="https://github.com/ifgi-sil/SketchMapia-Microservices/blob/main/README.md" target="_blank" >
+    SketchMapia
+  </a>.</p>
+
     </div>
   </div>
 
-
-
-  <!-- Bootstrap core JavaScript -->
-  <script src="{% static '//vendor/jquery/jquery.min.js' %}"></script>
-  <script src="{% static '//vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
-  <!-- Custom scripts for this template -->
-  <script src="{% static '//js/coming-soon.min.js' %}"></script>
-
 </body>
-
 </html>

@@ -10,7 +10,7 @@ overflow:hidden;
         .menu-title {
             margin: 0;
             cursor: pointer;
-            background: #5271a9;
+            background: #7AB629;
             color: white;
             padding: 5px 15px;
             border-radius: 5px;
@@ -25,7 +25,7 @@ overflow:hidden;
 
         /* Hover effect on menu button */
         .menu-title:hover {
-            background: #6b86c6;
+            background: #256428;
             transform: translateY(-2px);
         }
 
@@ -56,14 +56,14 @@ overflow:hidden;
             border-bottom: 1px solid #eee;
             white-space: nowrap;
             background: white;
-            color: #5271a9;
+            color: #7AB629;
             font-size: 13px;
             transition: background 0.3s ease;
         }
 
         /* Hover effect on dropdown items */
         .menu-options li:hover {
-            background: #5271a9;
+            background: #7AB629;
             color: white;
         }
 
@@ -76,12 +76,12 @@ overflow:hidden;
         }
 
 .oval-button {
-  background: #5271a9;
-  background-image: -webkit-linear-gradient(top, #5271a9, #b62bb8);
-  background-image: -moz-linear-gradient(top, #5271a9, #b62bb8);
-  background-image: -ms-linear-gradient(top, #5271a9, #b62bb8);
-  background-image: -o-linear-gradient(top, #5271a9, #b62bb8);
-  background-image: linear-gradient(to bottom, #5271a9, #b62bb8);
+  background: #7AB629;
+  background-image: -webkit-linear-gradient(top, #7AB629, #256428);
+  background-image: -moz-linear-gradient(top, #7AB629, #256428);
+  background-image: -ms-linear-gradient(top, #7AB629, #256428);
+  background-image: -o-linear-gradient(top, #7AB629, #256428);
+  background-image: linear-gradient(to bottom, #7AB629, #256428);
   -webkit-border-radius: 28;
   -moz-border-radius: 28;
   border-radius: 28px;
@@ -98,12 +98,12 @@ overflow:hidden;
 }
 
 .oval-button:hover {
-  background: #3c56fc;
-  background-image: -webkit-linear-gradient(top, #3c56fc, #3498db);
-  background-image: -moz-linear-gradient(top, #3c56fc, #3498db);
-  background-image: -ms-linear-gradient(top, #3c56fc, #3498db);
-  background-image: -o-linear-gradient(top, #3c56fc, #3498db);
-  background-image: linear-gradient(to bottom, #3c56fc, #3498db);
+  background:#256428;
+  background-image: -webkit-linear-gradient(top,#256428, #256428);
+  background-image: -moz-linear-gradient(top, #256428, #256428);
+  background-image: -ms-linear-gradient(top, #256428, #256428);
+  background-image: -o-linear-gradient(top, #256428, #256428);
+  background-image: linear-gradient(to bottom, #256428, #256428);
   text-decoration: none;
 }
 
@@ -172,7 +172,7 @@ border: 1px solid;
   margin-left: -3px;
 }
 
-$mynewcolor:#5271a9;
+$mynewcolor:#7AB629;
 
 .btn-primary {
     @include button-variant($mynewcolor, darken($mynewcolor, 7.5%), darken($mynewcolor, 10%), lighten($mynewcolor,5%), lighten($mynewcolor, 10%), darken($mynewcolor,30%));
@@ -196,14 +196,14 @@ div.window {
 }
 div.window label {
   display: block;
-  background: #5271a9;
+  background: #7AB629;
   font-size: xx-small;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   transition: 0.4s all linear;
 }
 div.window label:hover {
-  cursor: pointer; background: #5271a9;
+  cursor: pointer; background: #7AB629;
 }
 input.toggle ~ div {
 transform: scaleY(1);
@@ -224,7 +224,7 @@ display: none;
  }
 
 #basemapmenu {
-background: #5271a9;
+background: #7AB629;
 height:0.85rem;
 width:100%;
 border-bottom-left-radius: 3px;
@@ -237,7 +237,7 @@ border-bottom-right-radius: 3px;
     top: -95px;
     position: relative;
     font-family: Roboto;
-    background-color: #5271a9;
+    background-color: #7AB629;
     width: 60px;
     display: inline-block;
     text-align: center;
@@ -260,7 +260,7 @@ border-bottom-right-radius: 3px;
 
 
 .menu{
-    background: #5271a9;
+    background: #7AB629;
     padding: 1px;
     width: 8rem;
     margin: 1px;
