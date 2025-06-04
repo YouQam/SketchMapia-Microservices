@@ -58,10 +58,11 @@ def opraRelations(angle):
     
     
 def computeOPRA(l1, l2):
+    print("OPRAISSUE",l1)
     touch = pattern('FF1F00102')
-    im_pettern=l1.relate(l2)
+    im_pettern=l1['geometry'].relate(l2)
     #print ("im_pattern....:",im_pettern)
-    rangle, dangle = computeAngle(l1, l2)
+    rangle, dangle = computeAngle(l1['geometry'], l2)
     #print (dangle)
     if(touch.matches(im_pettern)):
         opraRelation = opraRelations(dangle)
@@ -73,8 +74,7 @@ def qualify_OPRA(data):
     #every qualifier function must specify these two parameters
     qualify_OPRA.relation_set = 'opra'
     qualify_OPRA.arity = 2
-
-    return 'opra', 2, {}, [{'obj 1':data[i]['attributes']['id'], 'obj 2':sec['attributes']['id'], 'relation':computeOPRA(data[i]['geometry'], sec['geometry'])} 
+    return 'opra', 2, {}, [{'obj 1':data[i]['attributes']['id'], 'obj 2':sec['attributes']['id'], 'relation':computeOPRA(data[i], sec['geometry'])}
         for i in range(len(data[:-1])) for sec in data[i+1:] if (data[i]['geometry'].geom_type=='LineString'and sec['geometry'].geom_type=='LineString')]
 
 

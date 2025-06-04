@@ -962,6 +962,7 @@ def spatial_transformation(routedata,sketchroutedata):
                             "RoundAboutCount": len(connected_streets)
                         }
                     )
+                    print("check",new_feature)
                     features.append(new_feature)
 
     # Junction merge.................................................................
@@ -1217,6 +1218,7 @@ def spatial_transformation(routedata,sketchroutedata):
             # Update the feature's properties with the merged properties
             feature["properties"].update(merged_properties)
         elif base_align in id_to_properties:
+            print("check 1", base_align,id_to_properties)
             base_properties = id_to_properties[base_align]
             # Merge the sketch data properties into the feature collection properties
             feature["properties"].update(base_properties)
@@ -1478,6 +1480,7 @@ def spatial_transformation(routedata,sketchroutedata):
         s_a2e_p_res.append(s_a2e_p[start:end])
 
     for x, ids, sids in zip(s_a2e_l_res, a2e_ids, s_a2e_ids_l):
+        print(x,ids,sids,"CHECK INGA")
         multi_line = geometry.MultiLineString(x)
         if is_connected(multi_line):
             merged_line = ops.linemerge(multi_line)
@@ -1490,6 +1493,7 @@ def spatial_transformation(routedata,sketchroutedata):
         for feature in sketchdata['features']:
             if feature['properties']['sid'] in sids:
                 merged_properties.update(feature['properties'])
+                print("check 3", merged_properties)
                 # processed_sids.add(feature['properties']['sid'])
 
         features.append(Feature(geometry=geometry.mapping(g1_a2e), properties=merged_properties))
@@ -1497,6 +1501,7 @@ def spatial_transformation(routedata,sketchroutedata):
     # sketchdata['features'] = [feature for feature in sketchdata['features'] if feature['properties']['sid'] not in processed_sids]
 
     for x, ids, sids in zip(s_a2e_p_res, a2e_ids_p, s_a2e_ids_p):
+        print("check 4",ids,sids)
         if len(x) == 0: # Skip empty inputs
             continue
         #print (x, ids, sids, "check a2ep")
@@ -1509,6 +1514,7 @@ def spatial_transformation(routedata,sketchroutedata):
         for feature in sketchdata['features']:
             if feature['properties']['sid'] in sids:
                 merged_properties.update(feature['properties'])
+                print("check 5",merged_properties)
                 # processed_sids.add(feature['properties']['sid'])
 
         features.append(Feature(geometry=geometry.mapping(g1_a2e), properties=merged_properties))

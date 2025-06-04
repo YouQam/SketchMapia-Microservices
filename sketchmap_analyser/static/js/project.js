@@ -119,7 +119,7 @@ MMGeoJsonData = GenBaseMap.toGeoJSON();
 
         var group = MMGeoJsonData.features[i].properties.group;
 
-        if(group != "Yes"){
+        if(group != true){
             MMGeoJsonDataFiltered.features[count]=MMGeoJsonData.features[i];
             count = count + 1;
         }
@@ -142,16 +142,18 @@ SMGeoJsonData = ProcSketchMap.toGeoJSON();
     SMGeoJsonDataFiltered.features = [];
     for (var i in SMGeoJsonData.features){
         var group = SMGeoJsonData.features[i].properties.group;
+        console.log("check,check",group)
         var alignBoolean = SMGeoJsonData.features[i].properties.aligned;
-        if(group != "Yes" && alignBoolean == true){
+        if(group != true && alignBoolean == true){
+            console.log("check,check",SMGeoJsonData.features[i]);
             SMGeoJsonDataFiltered.features[count]= SMGeoJsonData.features[i];
             count = count + 1;
         }
         else{
-           if(group == "Yes"){
-
+           if(group == "True"){
            if(SMGeoJsonData.features[i].properties.genType3 != undefined && SMGeoJsonData.features[i].properties.genType3.includes("Multi-MultiOmissionMerge")){
             SMGeoJsonData.features[i].properties.id = 'G' + SMGeoJsonData.features[i].properties.groupID;
+            console.log("IS THIS THE ISSUE",SMGeoJsonData.features[i]);
             SMGeoJsonDataFiltered.features[count]=SMGeoJsonData.features[i];
             count = count + 1;
             }
@@ -420,6 +422,7 @@ await $.ajax({
                     $('#summary_result_div').prop("style", " height:500px; overflow: auto;  visibility: visible; position:absolute ; z-index:10000000; background-color: white");
                     const GenBasemapjson = await generalizedMapExtract(fixedIndex,currentsketchMap,{currentsketchMap:AlignmentArray[currentsketchMap]},routeIDArray,sketchIDArray,lastSketchStreet,lastBaseStreet,resp);
                     const processeddata = await prepareDataForQualifier(fixedIndex,GenBasemapjson.generalizedbasemap);
+                    console.log("CHECLLLL", processeddata)
                     // If completeness is required, wait for the response
          let responseData = {}; // Object to store merged responses
 
@@ -525,6 +528,8 @@ function generalizedMapExtract(index,currentsketchMap,alignmentArraySingleMap,ro
                         const groupidNumeric = String(item.properties.groupID).replace(/\D/g, ''); // Extract numeric part
                         item.properties.id = groupidNumeric ? 'G' + groupidNumeric : ''; // Prefix 'g' to the numeric value
                     } else {
+                        console.log("check hereeee", item, item.properties.id)
+                        if (typeof item.properties.id != 'undefined')
                         item.properties.id = item.properties.id.toString();
                     }
                     if(item.properties.otype == "CircleMarker"){

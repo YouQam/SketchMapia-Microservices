@@ -25,7 +25,8 @@ def qualify_LeftRight(data):
         if (sec['geometry'].geom_type=='LineString' and sec['attributes']['isRoute']=='Yes'):
             for i in range(len(data)):
                 if (data[i]['geometry'].geom_type=='Polygon'):
-                    #check that the two geoms are adjacent 
+                    #check that the two geoms are adjacent
+                    print("INGA PAAAPOM",data[i],maxMinDist)
                     isAdjacent= computeAdjacency(data[i]['geometry'], sec['geometry'], maxMinDist)
                     #print ("is adjacent...:",isAdjacent)
                     if(isAdjacent == "Adjacent"):
