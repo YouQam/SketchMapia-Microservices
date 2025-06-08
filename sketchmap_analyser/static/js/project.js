@@ -27,6 +27,7 @@ var numbOfSM;
 var tempallDrawnSketchItems;
 var streetCountBeforeGen = 0;
 var lmCountBeforeGen = 0;
+var hostName
 
 
 
@@ -142,10 +143,8 @@ SMGeoJsonData = ProcSketchMap.toGeoJSON();
     SMGeoJsonDataFiltered.features = [];
     for (var i in SMGeoJsonData.features){
         var group = SMGeoJsonData.features[i].properties.group;
-        console.log("check,check",group)
         var alignBoolean = SMGeoJsonData.features[i].properties.aligned;
         if(group != true && alignBoolean == true){
-            console.log("check,check",SMGeoJsonData.features[i]);
             SMGeoJsonDataFiltered.features[count]= SMGeoJsonData.features[i];
             count = count + 1;
         }
@@ -153,7 +152,6 @@ SMGeoJsonData = ProcSketchMap.toGeoJSON();
            if(group == "True"){
            if(SMGeoJsonData.features[i].properties.genType3 != undefined && SMGeoJsonData.features[i].properties.genType3.includes("Multi-MultiOmissionMerge")){
             SMGeoJsonData.features[i].properties.id = 'G' + SMGeoJsonData.features[i].properties.groupID;
-            console.log("IS THIS THE ISSUE",SMGeoJsonData.features[i]);
             SMGeoJsonDataFiltered.features[count]=SMGeoJsonData.features[i];
             count = count + 1;
             }
@@ -264,7 +262,9 @@ function GenchangestyleOnHover(Array,BooleanGroup,GenBaseMap){
 
 
 async function analyseMultiMap (comp,acc) {
-saveSketchMap();
+if (BooleanEditSketchMode){
+         saveSketchMap();
+}
     responseArray = {};
     genResultArray = {};
     qualresponseArray = {};
@@ -325,6 +325,7 @@ saveSketchMap();
 
         restoreBaseAlignment(AlignmentArray[currentsketchMap]);
         drawnSketchItems = allDrawnSketchItems[currentsketchMap];
+        console.log(drawnSketchItems,"CHECK HERE");
 
         routeArray = [];
         sketchRouteArray = [];
@@ -400,54 +401,74 @@ sketchIDArray.push(bysketchrouteorder[i].id);
 }
 var lastSketchStreet = sketchIDArray[sketchIDArray.length -1];
 var lastBaseStreet = routeIDArray[routeIDArray.length - 1];
+hostName = window.location.hostname;
+                console.log(hostName);
 
+ $('#loading-spinner').show();
 
-await $.ajax({
+try {
+    const resp = await $.ajax({
+      headers: { "X-CSRFToken": $.cookie("csrftoken") },
+      url: 'http://' + hostName + ':8001/generalizations/requestFME/',
+      type: 'POST',
+      data: {
+        csrfmiddlewaretoken: $.cookie("csrftoken"),
+        basedata: JSON.stringify(drawnItems.toGeoJSON()),
+        sketchdata: JSON.stringify(drawnSketchItems.toGeoJSON()),
+        aligndata: JSON.stringify(AlignmentArray[currentsketchMap]),
+        routedata: JSON.stringify(routeIDArray),
+        sketchroutedata: JSON.stringify(sketchIDArray),
+        sketchmapName: JSON.stringify(currentsketchMap)
+      }
+    });
 
-                headers: { "X-CSRFToken": $.cookie("csrftoken") },
-                url: 'http://localhost:8001/generalizations/requestFME/',
-                type: 'POST',
-                data: {
-                    csrfmiddlewaretoken: $.cookie("csrftoken"),
-                    basedata: JSON.stringify(drawnItems.toGeoJSON()),
-                    sketchdata: JSON.stringify(drawnSketchItems.toGeoJSON()),
-                    aligndata: JSON.stringify(AlignmentArray[currentsketchMap]),
-                    routedata: JSON.stringify(routeIDArray),
-                    sketchroutedata: JSON.stringify(sketchIDArray),
-                    sketchmapName: JSON.stringify (currentsketchMap)
-                },
-                //contentType: 'text/plain',
-                success: async function (resp) {
-                const fixedIndex = index;
-                    $('#summary_result_div').prop("style", " height:500px; overflow: auto;  visibility: visible; position:absolute ; z-index:10000000; background-color: white");
-                    const GenBasemapjson = await generalizedMapExtract(fixedIndex,currentsketchMap,{currentsketchMap:AlignmentArray[currentsketchMap]},routeIDArray,sketchIDArray,lastSketchStreet,lastBaseStreet,resp);
-                    const processeddata = await prepareDataForQualifier(fixedIndex,GenBasemapjson.generalizedbasemap);
-                    console.log("CHECLLLL", processeddata)
-                    // If completeness is required, wait for the response
-         let responseData = {}; // Object to store merged responses
+    const fixedIndex = index;
 
-    const completenessPromise = comp ? analyzeCompleteness(fixedIndex, currentsketchMap, processeddata.sketchdata, processeddata.metricdata) : Promise.resolve({});
-    const qualitativePromise = acc ? analyzeQualitative(fixedIndex, currentsketchMap, processeddata.sketchdata, processeddata.metricdata) : Promise.resolve({});
+    $('#summary_result_div').prop("style", "height:500px; overflow:auto; visibility:visible; position:absolute; z-index:10000000; background-color:white");
 
-    // Wait for both promises to resolve
-    Promise.all([completenessPromise, qualitativePromise])
-        .then(([completenessResponse, qualitativeResponse]) => {
+    const GenBasemapjson = await generalizedMapExtract(
+      fixedIndex,
+      currentsketchMap,
+      { [currentsketchMap]: AlignmentArray[currentsketchMap] },
+      routeIDArray,
+      sketchIDArray,
+      lastSketchStreet,
+      lastBaseStreet,
+      resp
+    );
 
-            // Merge responses
-            Object.assign(responseData, completenessResponse, qualitativeResponse);
+    const processeddata = await prepareDataForQualifier(fixedIndex, GenBasemapjson.generalizedbasemap);
 
-            // Call setResults_in_output_div only once
-            TemporaryAlignmentArray= JSON.parse(JSON.stringify({}));
-            TemporaryAlignmentArray = JSON.parse(JSON.stringify(AlignmentArray));
-            setResults_in_output_div(fixedIndex, responseData);
-        })
-        .catch(error => console.error("Error in analysis:", error));
+    let responseData = {};
 
-                    }
-                });
+    const completenessPromise = comp
+      ? analyzeCompleteness(fixedIndex, currentsketchMap, processeddata.sketchdata, processeddata.metricdata)
+      : Promise.resolve({});
+
+    const qualitativePromise = acc
+      ? analyzeQualitative(fixedIndex, currentsketchMap, processeddata.sketchdata, processeddata.metricdata)
+      : Promise.resolve({});
+
+    const [completenessResponse, qualitativeResponse] = await Promise.all([
+      completenessPromise,
+      qualitativePromise
+    ]);
+
+    Object.assign(responseData, completenessResponse, qualitativeResponse);
+
+    TemporaryAlignmentArray = JSON.parse(JSON.stringify(AlignmentArray));
+    setResults_in_output_div(fixedIndex, responseData);
+
+  } catch (error) {
+    console.error("Error during analysis:", error);
+    // You could show an error message here too if needed
+  } finally {
+    $('#loading-spinner').hide(); // ✅ Spinner OFF regardless of success or failure
+  }
+}
 
 }
-}
+
 
 
 
@@ -528,7 +549,6 @@ function generalizedMapExtract(index,currentsketchMap,alignmentArraySingleMap,ro
                         const groupidNumeric = String(item.properties.groupID).replace(/\D/g, ''); // Extract numeric part
                         item.properties.id = groupidNumeric ? 'G' + groupidNumeric : ''; // Prefix 'g' to the numeric value
                     } else {
-                        console.log("check hereeee", item, item.properties.id)
                         if (typeof item.properties.id != 'undefined')
                         item.properties.id = item.properties.id.toString();
                     }
@@ -603,7 +623,7 @@ async function analyzeCompleteness(index, currentsketchMap, processedSketch, pro
     return new Promise((resolve, reject) => {
         $.ajax({
             headers: { "X-CSRFToken": $.cookie("csrftoken") },
-            url: 'http://localhost:8002/completeness/analyzeCompleteness/',
+            url: 'http://'+hostName+':8002/completeness/analyzeCompleteness/',
             type: 'POST',
             data: {
                 sketchFileName: currentsketchMap,
@@ -628,7 +648,7 @@ async function analyzeQualitative(index, currentsketchMap, processedSketch, proc
     return new Promise((resolve, reject) => {
         $.ajax({
             headers: { "X-CSRFToken": $.cookie("csrftoken") },
-            url: 'http://localhost:8003/accuracy/analyzeQualitative/',
+            url: 'http://'+hostName+':8003/accuracy/analyzeQualitative/',
             type: 'POST',
             data: {
                 sketchFileName: currentsketchMap,
@@ -642,11 +662,13 @@ async function analyzeQualitative(index, currentsketchMap, processedSketch, proc
                 qualRelationsBaseMap[index] = response.mmqcn;
                 qualRelationsSketchMap[index] = response.smqcn;
                 resolve(response.qualitative_results);  // ✅ Resolving the Promise with response
+                console.log("show2");
+                $('#loading-spinner').show();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('Error in qualitative analysis:', errorThrown);
                 reject(errorThrown);  // ❌ Rejecting the Promise on error
-            }
+            },
         });
     });
 }
@@ -660,12 +682,18 @@ if (BooleanMissingFeature){
 generalizedmap.eachLayer(function(glayer){
             if (!glayer.feature.properties.selected && glayer.feature.properties.missing == true && !glayer.feature.properties.isRoute){
                 glayer.setStyle({opacity:0,weight: 0,color: "#e8913a",dashArray: [5, 5]});
+                if(glayer.getTooltip()){
+                glayer.getTooltip().getElement().style.opacity = '0';
+                }
             }
             if (!glayer.feature.properties.selected && !glayer.feature.properties.missing && !glayer.feature.properties.isRoute){
                 glayer.setStyle({opacity:0.7,weight: 5,color: "#e8913a",dashArray: null});
             }
             if (!glayer.feature.properties.selected && glayer.feature.properties.missing == true && glayer.feature.properties.isRoute=="Yes"){
                 glayer.setStyle({opacity:0,weight: 0,color: "red",dashArray: [5, 5]});
+               if(glayer.getTooltip()){
+                glayer.getTooltip().getElement().style.opacity = '0';
+                }
             }
             if(!glayer.feature.properties.selected && !glayer.feature.properties.missing && glayer.feature.properties.isRoute=="Yes"){
                 glayer.setStyle({opacity:0.7,weight: 5,color: "red",dashArray: null,});
@@ -678,12 +706,18 @@ generalizedmap.eachLayer(function(glayer){
     generalizedmap.eachLayer(function(glayer){
             if (!glayer.feature.properties.selected && glayer.feature.properties.missing == true && !glayer.feature.properties.isRoute){
                 glayer.setStyle({opacity:0.7,weight: 5,color: "#e8913a",dashArray: [5, 5]});
+                if(glayer.getTooltip()){
+                glayer.getTooltip().getElement().style.opacity = '1';
+                }
             }
             if (!glayer.feature.properties.selected && !glayer.feature.properties.missing && !glayer.feature.properties.isRoute){
                 glayer.setStyle({opacity:0.7,weight: 5,color: "#e8913a",dashArray: null});
             }
             if (!glayer.feature.properties.selected && glayer.feature.properties.missing == true && glayer.feature.properties.isRoute=="Yes"){
                 glayer.setStyle({opacity:0.7,weight: 5,color: "red",dashArray: [5, 5]});
+                if(glayer.getTooltip()){
+                glayer.getTooltip().getElement().style.opacity = '1';
+                }
             }
             if(!glayer.feature.properties.selected && !glayer.feature.properties.missing && glayer.feature.properties.isRoute=="Yes"){
                 glayer.setStyle({opacity:0.7,weight: 5,color: "red",dashArray: null,});
@@ -700,7 +734,6 @@ generalizedmap.eachLayer(function(glayer){
 
 
 function setResults_in_output_div(index,resp){
-
    console.log("####",resp.sketchMapID);
        cells[index][0].innerHTML = resp.sketchMapID;
        cells[index][2].innerHTML = genResultArray[resp.sketchMapID].overallGen;

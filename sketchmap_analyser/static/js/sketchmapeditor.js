@@ -93,7 +93,9 @@ function renderImageFile(file, location) {
             'Base Map': layerGroupBasemap,
             'Generalized Map': layerGroupBasemapGen
         }).addTo(baseMap);
+        labelButton.addTo(baseMap);
         missingFeatureButton.addTo(baseMap);
+
         }
 
 $( "#loaded" ).prop( "checked", true );
@@ -232,6 +234,7 @@ function clearRoute(){
 };
 
 var labelButton = L.easyButton({
+position: 'topright',
 states: [{
             stateName: 'label-visible',        // name the state
             icon:      'fa-solid fa-info',               // and define its properties
@@ -244,7 +247,6 @@ states: [{
                 btn.state('label-invisible');    // change state on click!
 
                 if (allGenBaseMap[sketchMaptitle] != null){
-
                        genbasemap.eachLayer(function(glayer){
                             glayer.bindTooltip(String(glayer.feature.properties.id), {permanent:true});
                        });
@@ -281,6 +283,7 @@ states: [{
                 btn.state('missing-visible');    // change state on click!
                 BooleanMissingFeature = true;
                 GenStyleLayers(allGenBaseMap[sketchMaptitle]);
+                styleLayers();
             }
         }, {
             stateName: 'missing-visible',
@@ -291,6 +294,8 @@ states: [{
                 btn.state('missing-invisible');
                 BooleanMissingFeature = false;
                 GenStyleLayers(allGenBaseMap[sketchMaptitle]);
+                styleLayers();
+
             }
     }]
 });
@@ -299,6 +304,7 @@ states: [{
 
 
 var labelButtonSketchMap = L.easyButton({
+position: 'topright',
 states: [{
             stateName: 'label-visible',        // name the state
             icon:      'fa-solid fa-info',               // and define its properties
@@ -401,7 +407,6 @@ drawnItems.eachLayer(function(blayer){
         });
 addedClickBase = false;
 routeButton.addTo(baseMap);
-labelButton.addTo(baseMap);
 multibuildingButton.addTo(baseMap);
 });
 
@@ -482,6 +487,8 @@ drawnItems.eachLayer(function(blayer){
         SMLoaded.addTo(sketchMap);
         sketchMap.fitBounds(bounds);
         sketchMaptitle = $(e.target).parent().attr("data-original-title");
+        console.log(allDrawnSketchItems);
+            labelButtonSketchMap.addTo(sketchMap);
         if(allDrawnSketchItems.hasOwnProperty(sketchMaptitle)){
             drawnSketchItems=allDrawnSketchItems[sketchMaptitle];
             drawnSketchItems.addTo(sketchMap);
@@ -516,7 +523,7 @@ drawnItems.eachLayer(function(blayer){
         styleLayers();
         }
         else{
-            console.log("in AlignmentArray");
+            console.log("in AlignmentArray",sketchMaptitle);
             checkAlignnum = AlignmentArray[sketchMaptitle].checkAlignnum;
             alignmentArraySingleMap=AlignmentArray[sketchMaptitle];
          var idArray = Object.values(drawnSketchItems.toGeoJSON().features).map((item) => item.properties.id);
@@ -685,10 +692,6 @@ sketchMap.pm.Toolbar.changeActionsOfControl('CircleMarker', sketchActions);
         });
 
 
-
-
-
-    labelButtonSketchMap.addTo(sketchMap);
 
     });
 
@@ -898,7 +901,7 @@ sketchMap.pm.Toolbar.changeActionsOfControl('CircleMarker', sketchActions);
 
 
    function saveSketchMap(){
-    console.log("called");
+    console.log("calledSave");
      if (sketchMap){
         sketchMap.pm.removeControls();
         sketchMap.off('pm:drawstart');
@@ -1002,24 +1005,60 @@ if (drawnSketchItems){
 }
 
 if (drawnItems){
+if (BooleanMissingFeature){
     drawnItems.eachLayer(function(blayer){
 
          if (blayer.feature.properties.selected){
                 blayer.setStyle({weight:12});
             }
             if (!blayer.feature.properties.selected && !blayer.feature.properties.aligned && (!blayer.feature.properties.isRoute || !blayer.feature.properties.isMultiBuilding)){
+                blayer.setStyle({opacity:0,weight: 5,color: "#e8913a",dashArray: [5, 5]});
+               if(blayer.getTooltip()){
+                blayer.getTooltip().getElement().style.opacity = '0';
+                }
+            }
+            if (!blayer.feature.properties.selected && blayer.feature.properties.aligned && (!blayer.feature.properties.isRoute || !blayer.feature.properties.isMultiBuilding)){
+                blayer.setStyle({opacity:0.7,weight: 5,color: "#e8913a",dashArray: null});
+            }
+            if (!blayer.feature.properties.selected && !blayer.feature.properties.aligned && (blayer.feature.properties.isRoute=="Yes" || blayer.feature.properties.isMultiBuilding)){
+                blayer.setStyle({opacity:0,weight: 5,color: "red",dashArray: [5, 5]});
+               if(blayer.getTooltip()){
+                blayer.getTooltip().getElement().style.opacity = '0';
+                }
+            }
+            if(!blayer.feature.properties.selected && blayer.feature.properties.aligned &&( blayer.feature.properties.isRoute=="Yes" || blayer.feature.properties.isMultiBuilding)){
+                blayer.setStyle({opacity:0.7,weight: 5,color: "red",dashArray: null,});
+            }
+     });
+    }
+    else{
+     drawnItems.eachLayer(function(blayer){
+
+         if (blayer.feature.properties.selected){
+                blayer.setStyle({weight:12});
+            }
+            if (!blayer.feature.properties.selected && !blayer.feature.properties.aligned && (!blayer.feature.properties.isRoute || !blayer.feature.properties.isMultiBuilding)){
                 blayer.setStyle({opacity:0.7,weight: 5,color: "#e8913a",dashArray: [5, 5]});
+                if(blayer.getTooltip()){
+                blayer.getTooltip().getElement().style.opacity = '1';
+                }
             }
             if (!blayer.feature.properties.selected && blayer.feature.properties.aligned && (!blayer.feature.properties.isRoute || !blayer.feature.properties.isMultiBuilding)){
                 blayer.setStyle({opacity:0.7,weight: 5,color: "#e8913a",dashArray: null});
             }
             if (!blayer.feature.properties.selected && !blayer.feature.properties.aligned && (blayer.feature.properties.isRoute=="Yes" || blayer.feature.properties.isMultiBuilding)){
                 blayer.setStyle({opacity:0.7,weight: 5,color: "red",dashArray: [5, 5]});
+                if(blayer.getTooltip()){
+                blayer.getTooltip().getElement().style.opacity = '1';
+                }
             }
             if(!blayer.feature.properties.selected && blayer.feature.properties.aligned &&( blayer.feature.properties.isRoute=="Yes" || blayer.feature.properties.isMultiBuilding)){
                 blayer.setStyle({opacity:0.7,weight: 5,color: "red",dashArray: null,});
             }
      });
+
+
+    }
     }
 }
 

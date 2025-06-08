@@ -38,27 +38,27 @@
       height: 80px;
     }
     .main-container {
-      display: flex;
       flex-wrap: wrap;
       padding: 20px;
+      margin: auto;
+      width:50%;
     }
-    .left-panel, .right-panel {
-      flex: 1;
-      min-width: 300px;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-    .left-panel {
-      border-right: 1px solid #ccc;
+  .tiny-bar {
+      width: 100px;
+      height: 4px;
+      background-color: #7AB629;
+      margin-top: 40px;
     }
     #LinktoSoftware {
-      display: inline-block;
+      display: block;
       background-color: #7AB629;
       color: white;
       padding: 10px 20px;
       text-decoration: none;
       border-radius: 4px;
       margin-top: 20px;
+      margin:auto;
+      width: fit-content;
     }
       #LinktoSoftware:hover {
       background-color: #256428;
@@ -103,8 +103,9 @@
   </header>
 
   <div class="main-container">
-    <div class="left-panel">
       <h1>Sketch Map Analyser</h1>
+
+       <div class="tiny-bar"></div>
       <h2>About</h2>
       <p>
        Researchers have long sought to systematically study how people perceive and understand space. Sketch maps can be considered as externalization of cognitive mental maps. However, the analysis of sketch maps is still a complicated, manual process. SketchMapia is a comprehensive method to analyse sketch maps. The analysis of sketch maps is utterly complex. SketchMapia assists people to systematically analyse sketch maps in social and natural sciences.
@@ -119,7 +120,27 @@
         <li>was the participant able to recall them in the correct spatial configuration. </li>
       </ol>
       </p>
-      <h2>References</h2>
+
+      <a id = "LinktoSoftware"  style = "margin:auto" href="generalizingmaps/" target="_blank"> Start SKETCHMAPIA</a>
+       <div class="tiny-bar"></div>
+
+      <h2 >Tutorials</h2>
+      <p>This video gives a short overview of SketchMapia and how to use it.</p>
+      <div style="text-align: center;">
+       <iframe width="420" height="280"
+          src="https://www.youtube.com/embed/7yAf-c5qIrk"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+      </iframe>
+        </div>
+        <p>The step-by-step instruction of how to use the software can be found at the associated github repository:  <a style="color:#7AB629" href="https://github.com/ifgi-sil/SketchMapia-Microservices/blob/main/README.md" target="_blank" >
+    SketchMapia
+  </a>.</p>
+       <div class="tiny-bar"></div>
+
+       <h2>References</h2>
        <green-title>
     <a href="https://doi.org/10.1371/journal.pone.0304696" target="_blank" rel="noopener noreferrer" class="title">
       An algorithmic approach to detect generalization in sketch maps from sketch map alignment
@@ -167,25 +188,6 @@ Spatial Cognition and Computation
     </div>
   </green-title>
 
-    </div>
-    <div class="right-panel">
-        <a id = "LinktoSoftware" href="http://localhost:8000/generalizingmaps/" target="_blank"> Start SKETCHMAPIA</a>
-      <h2 >Tutorials</h2>
-      <p>This video gives a short overview of SketchMapia and how to use it.</p>
-      <div style="text-align: center;">
-       <iframe width="420" height="280"
-          src="https://www.youtube.com/embed/7yAf-c5qIrk"
-                title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen>
-      </iframe>
-        </div>
-        <p>The step-by-step instruction of how to use the software can be found at the associated github repository:  <a style="color:#7AB629" href="https://github.com/ifgi-sil/SketchMapia-Microservices/blob/main/README.md" target="_blank" >
-    SketchMapia
-  </a>.</p>
-
-    </div>
   </div>
 
 </body>
