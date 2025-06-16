@@ -409,7 +409,7 @@ hostName = window.location.hostname;
 try {
     const resp = await $.ajax({
       headers: { "X-CSRFToken": $.cookie("csrftoken") },
-      url: 'http://' + hostName + ':8001/generalizations/requestFME/',
+      url:  window.location.protocol +'//' + hostName + ':8001/generalizations/requestFME/',
       type: 'POST',
       data: {
         csrfmiddlewaretoken: $.cookie("csrftoken"),
@@ -623,7 +623,7 @@ async function analyzeCompleteness(index, currentsketchMap, processedSketch, pro
     return new Promise((resolve, reject) => {
         $.ajax({
             headers: { "X-CSRFToken": $.cookie("csrftoken") },
-            url: 'http://'+hostName+':8002/completeness/analyzeCompleteness/',
+            url: window.location.protocol +'//'+hostName+':8002/completeness/analyzeCompleteness/',
             type: 'POST',
             data: {
                 sketchFileName: currentsketchMap,
@@ -648,7 +648,7 @@ async function analyzeQualitative(index, currentsketchMap, processedSketch, proc
     return new Promise((resolve, reject) => {
         $.ajax({
             headers: { "X-CSRFToken": $.cookie("csrftoken") },
-            url: 'http://'+hostName+':8003/accuracy/analyzeQualitative/',
+            url:  window.location.protocol +'//'+hostName+':8003/accuracy/analyzeQualitative/',
             type: 'POST',
             data: {
                 sketchFileName: currentsketchMap,
@@ -661,13 +661,13 @@ async function analyzeQualitative(index, currentsketchMap, processedSketch, proc
                 qualresponseArray[currentsketchMap] = response.qualitative_results;
                 qualRelationsBaseMap[index] = response.mmqcn;
                 qualRelationsSketchMap[index] = response.smqcn;
-                resolve(response.qualitative_results);  // ✅ Resolving the Promise with response
+                resolve(response.qualitative_results);
                 console.log("show2");
                 $('#loading-spinner').show();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('Error in qualitative analysis:', errorThrown);
-                reject(errorThrown);  // ❌ Rejecting the Promise on error
+                reject(errorThrown);
             },
         });
     });
