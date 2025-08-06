@@ -1,0 +1,48 @@
+name: Docker Compose CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  run-django-containers:
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:20.10.16
+        options: --privileged
+        ports:
+          - 8000:8000
+          - 8001:8001
+          - 8002:8002
+          - 8003:8003
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v3
+
+      - name: Start Docker Compose
+        run: docker-compose up -d --build
+
+      - name: Wait for services to be healthy
+        run: |
+          sleep 30
+          docker ps
+
+      # Optional: Health check or test Django services
+      - name: Check if services are running
+        run: |
+          curl --fail http://localhost:8000 || exit 1
+          curl --fail http://localhost:8001 || exit 1
+          curl --fail http://localhost:8002 || exit 1
+          curl --fail http://localhost:8003 || exit 1
+
+      # Optional: Run Django tests inside one container
+      - name: Run Django Tests (on sketchmap_analyser)
+        run: docker-compose exec sketchmap_analyser python manage.py test
