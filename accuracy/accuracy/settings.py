@@ -77,6 +77,10 @@ USE_TZ = True
 
 
 CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:8000",  # Adjust with your frontend port
+# ]
+
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",  # Adjust with your frontend port
+    "https://sketchmapia.uni-muenster.de",  # Adjust with your frontend port
 ]
