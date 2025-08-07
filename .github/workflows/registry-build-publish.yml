@@ -34,6 +34,7 @@ jobs:
         with:
           context: ./generalizations
           file: ./generalizations/Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: yousef123/generalizations:latest
 
@@ -42,6 +43,7 @@ jobs:
         with:
           context: ./completeness
           file: ./completeness/Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: yousef123/completeness:latest
 
@@ -50,6 +52,7 @@ jobs:
         with:
           context: ./accuracy
           file: ./accuracy/Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: yousef123/qualitativerelations:latest
 
@@ -58,5 +61,6 @@ jobs:
         with:
           context: ./sketchmap_analyser
           file: ./sketchmap_analyser/Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: yousef123/sketchmap_analyser:latest
