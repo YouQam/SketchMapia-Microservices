@@ -142,4 +142,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8001",
     "http://127.0.0.1:8002",
     "http://127.0.0.1:8003",
+    "http://localhost:8000",  # Local development
+    "https://sketchmapia.uni-muenster.de",  # Production domain
+    "https://sketchmapia.uni-muenster.de:8000",  # Production with port
+    "https://sketchmapia.uni-muenster.de:8001",  # Production with port
+    "https://sketchmapia.uni-muenster.de:8002",  # Production with port
+    "https://sketchmapia.uni-muenster.de:8003",  # Production with port 
 ]

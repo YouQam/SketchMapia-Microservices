@@ -82,5 +82,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 # ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://sketchmapia.uni-muenster.de",  # Adjust with your frontend port
+    "http://localhost:8000",  # Local development
+    "https://sketchmapia.uni-muenster.de",  # Production domain
+    "https://sketchmapia.uni-muenster.de:8000",  # Production with port
 ]
