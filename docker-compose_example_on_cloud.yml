@@ -1,0 +1,32 @@
+version: '3.2'
+
+# Docker Compose file for SketchMapia Microservices
+# This file defines the services for generalizations, completeness, qualitative relations, and sketchmap analyser
+services:
+  generalizations:
+    image: yousef123/generalizations:latest
+    platform: linux/amd64
+    ports:
+      - "8001:8001"
+    restart: always
+
+  completeness:
+    image: yousef123/completeness:latest
+    platform: linux/amd64
+    ports:
+      - "8002:8002"
+    restart: always
+
+  qualitativerelations:
+    image: yousef123/qualitativerelations:latest
+    platform: linux/amd64
+    ports:
+      - "8003:8003"
+    restart: always
+
+  sketchmap_analyser:
+    image: yousef123/sketchmap_analyser:latest
+    platform: linux/amd64
+    ports:
+      - "8000:8000"
+    restart: always
