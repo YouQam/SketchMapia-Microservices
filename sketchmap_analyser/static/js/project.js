@@ -28,6 +28,7 @@ var tempallDrawnSketchItems;
 var streetCountBeforeGen = 0;
 var lmCountBeforeGen = 0;
 var hostName
+// var apiHost
 
 
 
@@ -404,12 +405,19 @@ var lastBaseStreet = routeIDArray[routeIDArray.length - 1];
 hostName = window.location.hostname;
                 console.log(hostName);
 
+// if (window.location.hostname === 'localhost') {
+//   apiHost = 'localhost:8001';
+// } else {
+//   apiHost = 'sketchmapia.uni-muenster.de:8001';
+// }
+// console.log(apiHost);
+
  $('#loading-spinner').show();
 
 try {
     const resp = await $.ajax({
       headers: { "X-CSRFToken": $.cookie("csrftoken") },
-      url:  window.location.protocol +'//' + hostName + ':8001/generalizations/requestFME/',
+      url:  'http://' + hostName + ':8001/generalizations/requestFME/',
       type: 'POST',
       data: {
         csrfmiddlewaretoken: $.cookie("csrftoken"),
@@ -623,7 +631,7 @@ async function analyzeCompleteness(index, currentsketchMap, processedSketch, pro
     return new Promise((resolve, reject) => {
         $.ajax({
             headers: { "X-CSRFToken": $.cookie("csrftoken") },
-            url: window.location.protocol +'//'+hostName+':8002/completeness/analyzeCompleteness/',
+            url: 'http://' +hostName+':8002/completeness/analyzeCompleteness/',
             type: 'POST',
             data: {
                 sketchFileName: currentsketchMap,
@@ -648,7 +656,7 @@ async function analyzeQualitative(index, currentsketchMap, processedSketch, proc
     return new Promise((resolve, reject) => {
         $.ajax({
             headers: { "X-CSRFToken": $.cookie("csrftoken") },
-            url:  window.location.protocol +'//'+hostName+':8003/accuracy/analyzeQualitative/',
+            url:  'http://' +hostName+':8003/accuracy/analyzeQualitative/',
             type: 'POST',
             data: {
                 sketchFileName: currentsketchMap,
