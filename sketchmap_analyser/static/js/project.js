@@ -636,8 +636,8 @@ async function analyzeCompleteness(index, currentsketchMap, processedSketch, pro
 
     return new Promise((resolve, reject) => {
         // Use the baseUrl function to get the correct URL
-        baseUrl = getBaseUrl(8001);
-        console.log(baseUrl);
+        baseUrl = getBaseUrl(8002);
+        console.log("baseUrl: ", baseUrl);
         $.ajax({
             headers: { "X-CSRFToken": $.cookie("csrftoken") },
             url: `${baseUrl}/completeness/analyzeCompleteness/`,
@@ -665,6 +665,7 @@ async function analyzeQualitative(index, currentsketchMap, processedSketch, proc
     return new Promise((resolve, reject) => {
         // Use the baseUrl function to get the correct URL
         baseUrl = getBaseUrl(8003);
+        console.log("baseUrl: ", baseUrl);
         $.ajax({
             headers: { "X-CSRFToken": $.cookie("csrftoken") },
             url:  `${baseUrl}/accuracy/analyzeQualitative/`,
