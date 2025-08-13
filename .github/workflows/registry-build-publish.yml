@@ -8,13 +8,14 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    env:
-      OWNER: ${{ github.repository_owner }}
-      OWNER_LC: ${{ github.repository_owner && github.repository_owner.toLowerCase() }}
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Set lowercase owner
+        id: vars
+        run: echo "owner_lc=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -33,7 +34,7 @@ jobs:
           file: ./generalizations/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/generalizations:latest
+          tags: ghcr.io/${{ env.owner_lc }}/generalizations:latest
 
       - name: Build and Push completeness
         uses: docker/build-push-action@v5
@@ -42,7 +43,7 @@ jobs:
           file: ./completeness/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/completeness:latest
+          tags: ghcr.io/${{ env.owner_lc }}/completeness:latest
 
       - name: Build and Push qualitativerelations
         uses: docker/build-push-action@v5
@@ -51,7 +52,7 @@ jobs:
           file: ./accuracy/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/qualitativerelations:latest
+          tags: ghcr.io/${{ env.owner_lc }}/qualitativerelations:latest
 
       - name: Build and Push sketchmap_analyser
         uses: docker/build-push-action@v5
@@ -60,4 +61,4 @@ jobs:
           file: ./sketchmap_analyser/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/sketchmap_analyser:latest
+          tags: ghcr.io/${{ env.owner_lc }}/sketchmap_analyser:latest
