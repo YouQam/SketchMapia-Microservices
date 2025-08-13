@@ -23,12 +23,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Login to DockerHub
-      #   uses: docker/login-action@v3
-      #   with:
-      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
-      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Build and Push generalizations
         uses: docker/build-push-action@v5
         with:
@@ -36,16 +30,16 @@ jobs:
           file: ./generalizations/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: yousef123/generalizations:latest
+          tags: ghcr.io/${{ github.repository_owner }}/generalizations:latest
 
       - name: Build and Push completeness
         uses: docker/build-push-action@v5
         with:
           context: ./completeness
           file: ./completeness/Dockerfile
-          platforms: linux/amd64  # # comment in if you are on Apple Silicon
+          platforms: linux/amd64
           push: true
-          tags: yousef123/completeness:latest
+          tags: ghcr.io/${{ github.repository_owner }}/completeness:latest
 
       - name: Build and Push qualitativerelations
         uses: docker/build-push-action@v5
@@ -54,7 +48,7 @@ jobs:
           file: ./accuracy/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: yousef123/qualitativerelations:latest
+          tags: ghcr.io/${{ github.repository_owner }}/qualitativerelations:latest
 
       - name: Build and Push sketchmap_analyser
         uses: docker/build-push-action@v5
@@ -63,4 +57,4 @@ jobs:
           file: ./sketchmap_analyser/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: yousef123/sketchmap_analyser:latest
+          tags: ghcr.io/${{ github.repository_owner }}/sketchmap_analyser:latest
